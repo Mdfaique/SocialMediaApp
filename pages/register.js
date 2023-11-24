@@ -10,17 +10,20 @@ const register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [answer, setAnswer] = useState("");
+  const [loading,setLoading] = useState(false);
   const router = useRouter()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post("http://localhost:8080/api/register", {
+      setLoading(true)
+      const { data } = await axios.post(`${process.env.NEXT_PUBLIC_API}/register`, {
         name,
         email,
         password,
         answer,
       });
+      setLoading(false)
       toast.success("User Registered Successfully");
       router.push('/login')
     } catch (error) {
@@ -98,9 +101,16 @@ const register = () => {
             <button
               type="submit"
               onClick={handleSubmit}
-              className="btn btn-primary"
+              className="btn btn-primary btn-lg"
+              disabled={!name || !email || !password || !answer}
             >
-              Register
+              {loading ? (
+                <>
+                <span>Loading &nbsp;</span>
+                 <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
+                </>)
+                :"Register"
+              }
             </button>
           </form>
         </div>
