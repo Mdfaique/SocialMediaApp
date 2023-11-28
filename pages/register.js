@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
+import { UserContext } from "../context";
+import Link from "next/link";
 import Layout from "../components/Layout";
 import axios from "axios";
-import {useRouter}from 'next/router'
+import { useRouter } from "next/router";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -10,26 +12,32 @@ const register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [answer, setAnswer] = useState("");
-  const [loading,setLoading] = useState(false);
-  const router = useRouter()
+  const [loading, setLoading] = useState(false);
+  const [state,setState] = useContext(UserContext)
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      setLoading(true)
-      const { data } = await axios.post(`${process.env.NEXT_PUBLIC_API}/register`, {
-        name,
-        email,
-        password,
-        answer,
-      });
-      setLoading(false)
+      setLoading(true);
+      const { data } = await axios.post(
+        `${process.env.NEXT_PUBLIC_API}/register`,
+        {
+          name,
+          email,
+          password,
+          answer,
+        }
+      );
+      setLoading(false);
       toast.success("User Registered Successfully");
-      router.push('/login')
+      router.push("/login");
     } catch (error) {
-      toast.error(error.response.data)
+      toast.error(error.response.data);
     }
   };
+
+  if(state && state.token) router.push('/')
 
   return (
     <Layout>
@@ -97,21 +105,29 @@ const register = () => {
                 aria-describedby="emailHelp"
               />
             </div>
-
-            <button
-              type="submit"
-              onClick={handleSubmit}
-              className="btn btn-primary btn-lg"
-              disabled={!name || !email || !password || !answer}
-            >
-              {loading ? (
-                <>
-                <span>Loading &nbsp;</span>
-                 <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                </>)
-                :"Register"
-              }
-            </button>
+            <div className="d-flex flex-row">
+              <button
+                type="submit"
+                onClick={handleSubmit}
+                className="btn btn-primary btn-lg"
+                disabled={!name || !email || !password || !answer}
+              >
+                {loading ? (
+                  <>
+                    <span>Loading &nbsp;</span>
+                    <span
+                      className="spinner-border spinner-border-sm"
+                      aria-hidden="true"
+                    ></span>
+                  </>
+                ) : (
+                  "Register"
+                )}
+              </button>
+              <p className="m-3">
+                Already Registered ?<Link href="/login">Login</Link>
+              </p>
+            </div>
           </form>
         </div>
       </div>

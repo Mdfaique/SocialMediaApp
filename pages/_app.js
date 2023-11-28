@@ -1,10 +1,12 @@
 import '../styles/globals.css'
-import Head from 'next/head'
+import { UserProvider } from '../context'
 
 function MyApp({ Component, pageProps }) {
   return (
     <>
+        <UserProvider>
         <Component {...pageProps} />
+        </UserProvider>
     </>
 )
 }
