@@ -6,7 +6,7 @@ const dashboard = () => {
   return (
     <Layout>
       <UserRoute>
-        <h1>dashboard page</h1>
+        <h1>dashboard page1</h1>
       </UserRoute>
     </Layout>
   );
