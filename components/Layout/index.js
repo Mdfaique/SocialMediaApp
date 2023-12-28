@@ -18,7 +18,7 @@ const Layout = ({ children,title }) => {
 };
 
 Layout.defaultProps = {
-  title : "Expense Manager"
+  title : "Social Media App"
 };
 
 export default Layout;
